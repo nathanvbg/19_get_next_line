@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:03 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/02 18:42:31 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:54:00 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	//if (s1 == NULL || s2 == NULL)
 	//	return (NULL);
 	//printf("s1 = %s\ns2 = %s\n", s1, s2);
-	while (s2[len - 1] != '\n' && s2[len])
+	while (s2[len] != '\n' && s2[len])
+		len++;
+	if (s2[len] == '\n')
 		len++;
 	len += ft_strlen(s1);
 	dest = malloc((len + 1) * sizeof(char));
@@ -46,9 +48,14 @@ char	*ft_strjoin(char *s1, char *s2)
 		dest[i] = s1[i];
 		i++;
 	}
-	while (s2[j] && s2[j - 1] != '\n')
+	while (s2[j] && s2[j] != '\n')
 	{
 		dest[i + j] = s2[j];
+		j++;
+	}
+	if (s2[j] == '\n')
+	{
+		dest[i + j] = '\n';
 		j++;
 	}
 	dest[i + j] = '\0';
@@ -72,12 +79,14 @@ char	*ft_strchr(char *str, int c)
 	return (NULL);
 }
 
-char	*ft_strndup(char *src)
+char	*ft_strndup(const char *str)
 {
 	int		i;
 	int		len;
 	char	*dest;
+	char	*src;
 
+	src = (char *)str;
 	printf("restoo = %s\n", src);
 	i = 0;
 	len = 0;
