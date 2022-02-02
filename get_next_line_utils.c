@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:03 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/02 18:06:09 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:42:31 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,24 @@ char	*ft_strndup(char *src)
 	int		len;
 	char	*dest;
 
+	printf("restoo = %s\n", src);
 	i = 0;
 	len = 0;
-	while (src[len] && src[len - 1] != '\n')
+	while (src[len] && src[len] != '\n')
 		len++;
+	if (src[len] == '\n')
+		len++;
+	printf("len = %d\n", len);
 	dest = malloc(len + 1 * sizeof(char));
 	if (!dest)
 		return (NULL);
-	while (src[i] && src[i - 1] != '\n')
+	while (i < len)
 	{
 		dest[i] = src[i];
+		printf("dest = %c\n", dest[i]);
 		i++;
 	}
 	dest[i] = '\0';
+	printf("dest = %s\n", dest);
 	return (dest);
 }

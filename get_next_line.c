@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/02 18:12:10 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:38:32 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ char	*ft_process(char **rest, int fd)
 		//printf("buf = %s\n", buf);
 	}
 	line = ft_strjoin(line, buf);
-	printf("line = %s", line);
 	*rest = ft_strchr(buf, '\n');
-	printf("rest = %s", *rest);
 	return (line);
 }
 
@@ -73,14 +71,15 @@ char	*get_next_line(int fd)
 		rest[fd] = ft_strndup("");
 	if (is_charset(rest[fd]) == 1)
 	{
+		printf("\nok\n");
+		printf("reeeestoooooo = %s\n", rest[fd]);
 		line = ft_strndup(rest[fd]);
-		//free(rest[fd]);
+		printf("ici = %s\n", line);
 		rest[fd] = ft_strchr(rest[fd], '\n');
 		return (line);
 	}
 	line = ft_process(&rest[fd], fd);
 	printf("liiiiiiine = %s\n", line);
-	printf("reeeest = %s\n", rest[fd]);
 	return (line);
 }
 
