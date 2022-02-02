@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:03 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/02 17:09:46 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/02 18:06:09 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	len = 0;
 	//if (s1 == NULL || s2 == NULL)
 	//	return (NULL);
+	//printf("s1 = %s\ns2 = %s\n", s1, s2);
 	while (s2[len - 1] != '\n' && s2[len])
 		len++;
 	len += ft_strlen(s1);
@@ -51,6 +52,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		j++;
 	}
 	dest[i + j] = '\0';
+	//printf("dest = %s\n", dest);
 	return (dest);
 }
 
@@ -62,7 +64,7 @@ char	*ft_strchr(char *str, int c)
 	while (str[i])
 	{
 		if (str[i] == c)
-			return (&str[i]);
+			return (&str[i + 1]);
 		i++;
 	}
 	if (c == '\0')
