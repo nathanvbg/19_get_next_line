@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 11:53:56 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 15:27:12 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ char	*ft_process(char **rest, int fd)
 		return (ft_free(rest));
 	ft_free(rest);
 	ret = read(fd, &buf, BUFFER_SIZE);
-	if (ret < 0)
-		return (ft_free(&line));
 	buf[ret] = '\0';
+	if (ret <= 0 && ft_strlen(line) == 0)
+		return (ft_free(&line));
 	while (ret > 0 && is_charset(buf) == 0)
 	{
 		tmp = line;
@@ -63,15 +63,25 @@ char	*ft_process(char **rest, int fd)
 		ret = read(fd, &buf, BUFFER_SIZE);
 		buf[ret] = '\0';
 	}
-	tmp = line;
-	line = ft_strjoin(line, buf);
+	return (ft_endprocess(&line, buf, &rest));
+}
+
+char	*ft_endprocess(char **line, char *buf, char ***rest)
+{
+	char	*tmp;
+
+	tmp = *line;
+	*line = ft_strjoin(*line, buf);
 	if (line == NULL)
 		return (ft_free(&tmp));
 	free(tmp);
-	if (ret == 0 && ft_strlen(line) == 0)
-		return (ft_free(&line));
-	*rest = ft_strndup(ft_strchr(buf, '\n'), '\0');
-	return (line);
+	**rest = ft_strndup(ft_strchr(buf, '\n'), '\0');
+	if (**rest == NULL)
+	{
+		free(*line);
+		return (NULL);
+	}
+	return (*line);
 }
 
 char	*get_next_line(int fd)
