@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/02 18:38:32 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 10:04:04 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,22 @@ char	*ft_process(char **rest, int fd)
 	char	*line;
 	char	buf[BUFFER_SIZE + 1];
 
-	line = ft_strndup(*rest);
+	line = ft_strndup(*rest, '\n');
 	ret = read(fd, &buf, BUFFER_SIZE);
+	printf("buf = %s\n", buf);
 	buf[ret] = '\0';
 	printf("buf = %s\n", buf);
 	while (ret > 0 && is_charset(buf) == 0)
 	{
 		line = ft_strjoin(line, buf);
-		printf("line = %s\n", line);
+		//printf("line = %s\n", line);
 		ret = read(fd, &buf, BUFFER_SIZE);
 		buf[ret] = '\0';
-		//printf("buf = %s\n", buf);
 	}
+	if (ret == 0)
+		return (NULL);
 	line = ft_strjoin(line, buf);
-	*rest = ft_strchr(buf, '\n');
+	*rest = ft_strndup(ft_strchr(buf, '\n'), '\0');
 	return (line);
 }
 
@@ -66,20 +68,16 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
-	printf("rst_debut = %s\n", rest[fd]);
+	//printf("rst_debut = %s\n", rest[fd]);
 	if (rest[fd] == NULL)
-		rest[fd] = ft_strndup("");
+		rest[fd] = ft_strndup("", '\0');
 	if (is_charset(rest[fd]) == 1)
 	{
-		printf("\nok\n");
-		printf("reeeestoooooo = %s\n", rest[fd]);
-		line = ft_strndup(rest[fd]);
-		printf("ici = %s\n", line);
-		rest[fd] = ft_strchr(rest[fd], '\n');
+		line = ft_strndup(rest[fd], '\n');
+		rest[fd] = ft_strndup(ft_strchr(rest[fd], '\n'), '\0');
 		return (line);
 	}
 	line = ft_process(&rest[fd], fd);
-	printf("liiiiiiine = %s\n", line);
 	return (line);
 }
 
@@ -90,12 +88,12 @@ int	main()
 	int		i;
 
 	i = 0;
-	fd = open("text.txt", O_RDONLY);
-	while (i < 6)
+	fd = open("41_no_nl", O_RDONLY);
+	printf("fd = %d\n", fd);
+	while ((line = get_next_line(fd)))
 	{
-		line = get_next_line(fd);
 		printf("gnl = %s", line);
-		//free(line);
+		free(line);
 		i++;
 	}
 	close(fd);

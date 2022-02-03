@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:03 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/02 18:54:00 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 09:50:08 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*ft_strchr(char *str, int c)
 	return (NULL);
 }
 
-char	*ft_strndup(const char *str)
+char	*ft_strndup(const char *str, char c)
 {
 	int		i;
 	int		len;
@@ -87,24 +87,22 @@ char	*ft_strndup(const char *str)
 	char	*src;
 
 	src = (char *)str;
-	printf("restoo = %s\n", src);
+	//printf("restoo = %s\n", src);
 	i = 0;
 	len = 0;
-	while (src[len] && src[len] != '\n')
+	while (src[len] && src[len] != c)
 		len++;
-	if (src[len] == '\n')
+	if (src[len] == '\n' && c == '\n')
 		len++;
-	printf("len = %d\n", len);
 	dest = malloc(len + 1 * sizeof(char));
 	if (!dest)
 		return (NULL);
 	while (i < len)
 	{
 		dest[i] = src[i];
-		printf("dest = %c\n", dest[i]);
 		i++;
 	}
 	dest[i] = '\0';
-	printf("dest = %s\n", dest);
+	//printf("dest = %s\n", dest);
 	return (dest);
 }
