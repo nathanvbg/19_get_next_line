@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:20 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 11:07:40 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 11:40:03 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <sys/uio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <limits.h>
 
 char	*get_next_line(int fd);
 char	*ft_strchr(char *s, int c);

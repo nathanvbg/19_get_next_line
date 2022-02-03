@@ -6,12 +6,11 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 11:12:29 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 11:53:56 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#define OPEN_MAX 256
 
 char	*ft_free(char **str)
 {
@@ -25,7 +24,7 @@ char	*ft_free(char **str)
 
 int	is_charset(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -51,6 +50,8 @@ char	*ft_process(char **rest, int fd)
 		return (ft_free(rest));
 	ft_free(rest);
 	ret = read(fd, &buf, BUFFER_SIZE);
+	if (ret < 0)
+		return (ft_free(&line));
 	buf[ret] = '\0';
 	while (ret > 0 && is_charset(buf) == 0)
 	{
@@ -109,6 +110,8 @@ int	main()
 	i = 0;
 	fd = open("empty", O_RDONLY);
 	printf("fd = %d\n", fd);
+	close(fd);
+	printf("fd = %d\n", fd);
 	while ((line = get_next_line(fd)))
 	{
 		printf("gnl = %s", line);
@@ -116,7 +119,6 @@ int	main()
 		i++;
 	}
 	system("leaks a.out");
-	close(fd);
 	return (0);
 }
 */

@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:03 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 10:19:42 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 11:37:13 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		j;
 	size_t	len;
 
-	i = 0;
-	j = 0;
+	i = -1;
+	j = -1;
 	len = 0;
-	//if (s1 == NULL || s2 == NULL)
-	//	return (NULL);
-	//printf("s1 = %s\ns2 = %s\n", s1, s2);
 	while (s2[len] != '\n' && s2[len])
 		len++;
 	if (s2[len] == '\n')
@@ -43,23 +40,13 @@ char	*ft_strjoin(char *s1, char *s2)
 	dest = malloc((len + 1) * sizeof(char));
 	if (!dest)
 		return (NULL);
-	while (s1[i])
-	{
+	while (s1[++i])
 		dest[i] = s1[i];
-		i++;
-	}
-	while (s2[j] && s2[j] != '\n')
-	{
+	while (s2[++j] && s2[j] != '\n')
 		dest[i + j] = s2[j];
-		j++;
-	}
 	if (s2[j] == '\n')
-	{
-		dest[i + j] = '\n';
-		j++;
-	}
+		dest[i + j++] = '\n';
 	dest[i + j] = '\0';
-	//printf("dest = %s\n", dest);
 	return (dest);
 }
 
@@ -87,7 +74,6 @@ char	*ft_strndup(const char *str, char c)
 	char	*src;
 
 	src = (char *)str;
-	//printf("restoo = %s\n", src);
 	i = 0;
 	len = 0;
 	while (src[len] && src[len] != c)
@@ -103,6 +89,5 @@ char	*ft_strndup(const char *str, char c)
 		i++;
 	}
 	dest[i] = '\0';
-	//printf("dest = %s\n", dest);
 	return (dest);
 }
