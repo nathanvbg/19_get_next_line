@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:20 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 10:19:40 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 11:07:40 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_strchr(char *s, int c);
 char	*ft_strndup(const char *str, char c);
 size_t	ft_strlen(char *s);
 char	*ft_strjoin(char *s1, char *s2);
-void	ft_free(char *str);
+char	*ft_free(char **str);
 char	*ft_process(char **rest, int fd);
 
 #endif

@@ -6,20 +6,21 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 10:33:31 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 11:12:29 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #define OPEN_MAX 256
 
-void	ft_free(char *str)
+char	*ft_free(char **str)
 {
 	if (str != NULL)
 	{
-		free(str);
-		str = NULL;
+		free(*str);
+		*str = NULL;
 	}
+	return (NULL);
 }
 
 int	is_charset(char *str)
@@ -46,25 +47,28 @@ char	*ft_process(char **rest, int fd)
 	char	*tmp;
 
 	line = ft_strndup(*rest, '\n');
-	free(*rest);
+	if (line == NULL)
+		return (ft_free(rest));
+	ft_free(rest);
 	ret = read(fd, &buf, BUFFER_SIZE);
 	buf[ret] = '\0';
 	while (ret > 0 && is_charset(buf) == 0)
 	{
 		tmp = line;
 		line = ft_strjoin(line, buf);
+		if (line == NULL)
+			return (ft_free(&tmp));
 		free(tmp);
 		ret = read(fd, &buf, BUFFER_SIZE);
 		buf[ret] = '\0';
 	}
 	tmp = line;
 	line = ft_strjoin(line, buf);
+	if (line == NULL)
+		return (ft_free(&tmp));
 	free(tmp);
 	if (ret == 0 && ft_strlen(line) == 0)
-	{
-		free(line);
-		return (NULL);
-	}
+		return (ft_free(&line));
 	*rest = ft_strndup(ft_strchr(buf, '\n'), '\0');
 	return (line);
 }
@@ -78,11 +82,17 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (rest[fd] == NULL)
 		rest[fd] = ft_strndup("", '\0');
+	if (rest[fd] == NULL)
+		return (NULL);
 	if (is_charset(rest[fd]) == 1)
 	{
 		line = ft_strndup(rest[fd], '\n');
+		if (line == NULL)
+			return (ft_free(&rest[fd]));
 		free(rest[fd]);
 		rest[fd] = ft_strndup(ft_strchr(rest[fd], '\n'), '\0');
+		if (rest[fd] == NULL)
+			return (ft_free(&line));
 		return (line);
 	}
 	line = ft_process(&rest[fd], fd);
@@ -97,7 +107,7 @@ int	main()
 	int		i;
 
 	i = 0;
-	fd = open("41_no_nl", O_RDONLY);
+	fd = open("empty", O_RDONLY);
 	printf("fd = %d\n", fd);
 	while ((line = get_next_line(fd)))
 	{
@@ -105,6 +115,7 @@ int	main()
 		free(line);
 		i++;
 	}
+	system("leaks a.out");
 	close(fd);
 	return (0);
 }
