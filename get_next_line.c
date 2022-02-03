@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 10:04:04 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 10:14:14 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	is_charset(char *str)
 	{
 		if (str[i] == '\n')
 			return (1);
+		if (str[i] == '\0')
+			return (2);
 		i++;
 	}
 	return (0);
@@ -44,20 +46,22 @@ char	*ft_process(char **rest, int fd)
 
 	line = ft_strndup(*rest, '\n');
 	ret = read(fd, &buf, BUFFER_SIZE);
-	printf("buf = %s\n", buf);
 	buf[ret] = '\0';
-	printf("buf = %s\n", buf);
 	while (ret > 0 && is_charset(buf) == 0)
 	{
 		line = ft_strjoin(line, buf);
 		//printf("line = %s\n", line);
 		ret = read(fd, &buf, BUFFER_SIZE);
 		buf[ret] = '\0';
+		//printf("buf = %s\n", buf);
 	}
-	if (ret == 0)
-		return (NULL);
+	printf("line = %s\n", line);
 	line = ft_strjoin(line, buf);
+	if (ret == 0 && ft_strlen(line) == 0)
+		return (NULL);
 	*rest = ft_strndup(ft_strchr(buf, '\n'), '\0');
+	printf("line = %s\n", line);
+
 	return (line);
 }
 

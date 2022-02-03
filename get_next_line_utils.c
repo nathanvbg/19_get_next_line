@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:03 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 09:50:08 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 10:16:20 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ char	*ft_strchr(char *str, int c)
 			return (&str[i + 1]);
 		i++;
 	}
-	if (c == '\0')
+	if (c == '\n')
 		return (&str[i]);
 	return (NULL);
 }
