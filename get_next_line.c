@@ -6,13 +6,13 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/07 17:47:56 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/07 18:05:29 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_free(char **str, char **buf)
+char	*ft_endfree(char **str, char **buf)
 {
 	if (str != NULL)
 	{
@@ -22,25 +22,19 @@ char	*ft_free(char **str, char **buf)
 	if (buf != NULL)
 	{
 		free(*buf);
-		*buf = NULL;
+		*str = NULL;
 	}
 	return (NULL);
 }
 
-int	is_charset(char *str)
+char	*ft_free(char **str)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
+	if (str != NULL)
 	{
-		if (str[i] == '\n')
-			return (1);
-		if (str[i] == '\0')
-			return (2);
-		i++;
+		free(*str);
+		*str = NULL;
 	}
-	return (0);
+	return (NULL);
 }
 
 char	*ft_process(char **rest, int fd)
@@ -53,27 +47,18 @@ char	*ft_process(char **rest, int fd)
 	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	line = ft_strndup(*rest, '\n');
 	if (line == NULL)
-	{
-		ft_free(&buf);
-		return (ft_free(rest));
-	}
+		return (ft_endfree(rest, &buf));
 	ft_free(rest);
 	ret = read(fd, buf, BUFFER_SIZE);
 	buf[ret] = '\0';
 	if (ret <= 0 && ft_strlen(line) == 0)
-	{
-		ft_free(&buf);
-		return (ft_free(&line));
-	}
+		return (ft_endfree(&line, &buf));
 	while (ret > 0 && is_charset(buf) == 0)
 	{
 		tmp = line;
 		line = ft_strjoin(line, buf);
 		if (line == NULL)
-		{
-			ft_free(&buf);
-			return (ft_free(&tmp));
-		}
+			return (ft_endfree(&tmp, &buf));
 		free(tmp);
 		ret = read(fd, buf, BUFFER_SIZE);
 		buf[ret] = '\0';
@@ -88,17 +73,11 @@ char	*ft_endprocess(char **line, char **buf, char ***rest)
 	tmp = *line;
 	*line = ft_strjoin(*line, *buf);
 	if (line == NULL)
-	{
-		ft_free(buf);
-		return (ft_free(&tmp));
-	}
+		return (ft_endfree(&tmp, buf));
 	free(tmp);
 	**rest = ft_strndup(ft_strchr(*buf, '\n'), '\0');
 	if (**rest == NULL)
-	{
-		ft_free(buf);
-		return (ft_free(line));
-	}
+		return (ft_endfree(line, buf));
 	ft_free(buf);
 	return (*line);
 }
@@ -128,7 +107,6 @@ char	*get_next_line(int fd)
 	line = ft_process(&rest[fd], fd);
 	return (line);
 }
-
 /*
 int	main()
 {
