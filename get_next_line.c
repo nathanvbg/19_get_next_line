@@ -6,18 +6,23 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/07 17:36:49 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/07 17:47:56 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_free(char **str)
+char	*ft_free(char **str, char **buf)
 {
 	if (str != NULL)
 	{
 		free(*str);
 		*str = NULL;
+	}
+	if (buf != NULL)
+	{
+		free(*buf);
+		*buf = NULL;
 	}
 	return (NULL);
 }
@@ -48,18 +53,27 @@ char	*ft_process(char **rest, int fd)
 	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	line = ft_strndup(*rest, '\n');
 	if (line == NULL)
+	{
+		ft_free(&buf);
 		return (ft_free(rest));
+	}
 	ft_free(rest);
 	ret = read(fd, buf, BUFFER_SIZE);
 	buf[ret] = '\0';
 	if (ret <= 0 && ft_strlen(line) == 0)
+	{
+		ft_free(&buf);
 		return (ft_free(&line));
+	}
 	while (ret > 0 && is_charset(buf) == 0)
 	{
 		tmp = line;
 		line = ft_strjoin(line, buf);
 		if (line == NULL)
+		{
+			ft_free(&buf);
 			return (ft_free(&tmp));
+		}
 		free(tmp);
 		ret = read(fd, buf, BUFFER_SIZE);
 		buf[ret] = '\0';
