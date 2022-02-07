@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 15:34:09 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/07 17:36:49 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,15 @@ char	*ft_process(char **rest, int fd)
 {
 	int		ret;
 	char	*line;
-	char	buf[BUFFER_SIZE + 1];
+	char	*buf;
 	char	*tmp;
 
+	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	line = ft_strndup(*rest, '\n');
 	if (line == NULL)
 		return (ft_free(rest));
 	ft_free(rest);
-	ret = read(fd, &buf, BUFFER_SIZE);
+	ret = read(fd, buf, BUFFER_SIZE);
 	buf[ret] = '\0';
 	if (ret <= 0 && ft_strlen(line) == 0)
 		return (ft_free(&line));
@@ -60,27 +61,31 @@ char	*ft_process(char **rest, int fd)
 		if (line == NULL)
 			return (ft_free(&tmp));
 		free(tmp);
-		ret = read(fd, &buf, BUFFER_SIZE);
+		ret = read(fd, buf, BUFFER_SIZE);
 		buf[ret] = '\0';
 	}
-	return (ft_endprocess(&line, buf, &rest));
+	return (ft_endprocess(&line, &buf, &rest));
 }
 
-char	*ft_endprocess(char **line, char *buf, char ***rest)
+char	*ft_endprocess(char **line, char **buf, char ***rest)
 {
 	char	*tmp;
 
 	tmp = *line;
-	*line = ft_strjoin(*line, buf);
+	*line = ft_strjoin(*line, *buf);
 	if (line == NULL)
+	{
+		ft_free(buf);
 		return (ft_free(&tmp));
+	}
 	free(tmp);
-	**rest = ft_strndup(ft_strchr(buf, '\n'), '\0');
+	**rest = ft_strndup(ft_strchr(*buf, '\n'), '\0');
 	if (**rest == NULL)
 	{
-		free(*line);
-		return (NULL);
+		ft_free(buf);
+		return (ft_free(line));
 	}
+	ft_free(buf);
 	return (*line);
 }
 
@@ -118,7 +123,7 @@ int	main()
 	int		i;
 
 	i = 0;
-	fd = open("text.txt", O_RDONLY);
+	fd = open("41_no_nl", O_RDONLY);
 	while ((line = get_next_line(fd)))
 	{
 		printf("gnl = %s", line);

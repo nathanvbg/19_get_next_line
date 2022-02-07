@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 15:40:17 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/03 15:40:25 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/03 15:58:33 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,7 @@ char	*ft_endprocess(char **line, char *buf, char ***rest)
 	free(tmp);
 	**rest = ft_strndup(ft_strchr(buf, '\n'), '\0');
 	if (**rest == NULL)
-	{
-		free(*line);
-		return (NULL);
-	}
+		return (ft_free(line));
 	return (*line);
 }
 
