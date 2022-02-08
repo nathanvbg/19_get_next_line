@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/08 11:43:11 by naverbru         ###   ########.fr       */
+/*   Created: 2022/02/08 10:38:09 by naverbru          #+#    #+#             */
+/*   Updated: 2022/02/08 11:44:27 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_endfree(char **str, char **buf)
 {
@@ -88,7 +88,6 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*tmp;
 
-	tmp = NULL;
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (rest[fd] == NULL)
@@ -110,7 +109,6 @@ char	*get_next_line(int fd)
 	line = ft_process(&rest[fd], fd);
 	return (line);
 }
-
 /*
 int	main()
 {
@@ -119,7 +117,7 @@ int	main()
 	int		i;
 
 	i = 0;
-	fd = open("text.txt", O_RDONLY);
+	fd = open("alternate_line_nl_with_nl", O_RDONLY);
 	while ((line = get_next_line(fd)))
 	{
 		printf("gnl = %s", line);
