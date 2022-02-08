@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/02 16:20:32 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/08 11:43:11 by naverbru         ###   ########.fr       */
+/*   Created: 2022/02/08 11:58:46 by naverbru          #+#    #+#             */
+/*   Updated: 2022/02/08 11:59:07 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ char	*ft_process(char **rest, int fd)
 		return (ft_endfree(rest, &buf));
 	ft_free(rest);
 	ret = read(fd, buf, BUFFER_SIZE);
-	buf[ret] = '\0';
 	if (ret <= 0 && ft_strlen(line) == 0)
 		return (ft_endfree(&line, &buf));
+	buf[ret] = '\0';
 	while (ret > 0 && is_charset(buf) == 0)
 	{
 		tmp = line;
@@ -88,7 +88,6 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*tmp;
 
-	tmp = NULL;
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (rest[fd] == NULL)
@@ -119,14 +118,14 @@ int	main()
 	int		i;
 
 	i = 0;
-	fd = open("text.txt", O_RDONLY);
+	fd = open("alternate_line_nl_with_nl", O_RDONLY);
+	close(fd);
 	while ((line = get_next_line(fd)))
 	{
 		printf("gnl = %s", line);
 		free(line);
 		i++;
 	}
-	close(fd);
 	//system("leaks a.out");
 	return (0);
 }
