@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 16:21:20 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/07 18:02:38 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/08 16:00:09 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define GET_NEXT_LINE_H
 
 # include <fcntl.h>
-# include <stdio.h>
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>

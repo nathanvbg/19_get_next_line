@@ -6,7 +6,7 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 10:39:34 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/08 10:39:37 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/08 16:00:29 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define GET_NEXT_LINE_BONUS_H
 
 # include <fcntl.h>
-# include <stdio.h>
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>
