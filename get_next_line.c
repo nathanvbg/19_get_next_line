@@ -6,11 +6,12 @@
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 11:58:46 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/08 11:59:07 by naverbru         ###   ########.fr       */
+/*   Updated: 2022/02/10 12:21:44 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 char	*ft_endfree(char **str, char **buf)
 {
@@ -45,23 +46,24 @@ char	*ft_process(char **rest, int fd)
 	char	*tmp;
 
 	buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	line = ft_strndup(*rest, '\n');
+	if (!buf)
+		return (ft_free(rest));
+	line = ft_strjoin("", *rest);
 	if (line == NULL)
 		return (ft_endfree(rest, &buf));
 	ft_free(rest);
-	ret = read(fd, buf, BUFFER_SIZE);
-	if (ret <= 0 && ft_strlen(line) == 0)
-		return (ft_endfree(&line, &buf));
-	buf[ret] = '\0';
-	while (ret > 0 && is_charset(buf) == 0)
+	ret = 1;
+	while (ret > 0 && is_charset(line) != 1)
 	{
+		ret = read(fd, buf, BUFFER_SIZE);
+		if (ret <= 0 && ft_strlen(line) == 0)
+			return (ft_endfree(&line, &buf));
+		buf[ret] = '\0';
 		tmp = line;
 		line = ft_strjoin(line, buf);
 		if (line == NULL)
 			return (ft_endfree(&tmp, &buf));
 		free(tmp);
-		ret = read(fd, buf, BUFFER_SIZE);
-		buf[ret] = '\0';
 	}
 	return (ft_endprocess(&line, &buf, &rest));
 }
@@ -71,11 +73,11 @@ char	*ft_endprocess(char **line, char **buf, char ***rest)
 	char	*tmp;
 
 	tmp = *line;
-	*line = ft_strjoin(*line, *buf);
+	*line = ft_strndup(*line, '\n');
 	if (line == NULL)
 		return (ft_endfree(&tmp, buf));
+	**rest = ft_strndup(ft_strchr(tmp, '\n'), '\0');
 	free(tmp);
-	**rest = ft_strndup(ft_strchr(*buf, '\n'), '\0');
 	if (**rest == NULL)
 		return (ft_endfree(line, buf));
 	ft_free(buf);
@@ -86,7 +88,6 @@ char	*get_next_line(int fd)
 {
 	static char	*rest[OPEN_MAX];
 	char		*line;
-	char		*tmp;
 
 	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -94,18 +95,6 @@ char	*get_next_line(int fd)
 		rest[fd] = ft_strndup("", '\0');
 	if (rest[fd] == NULL)
 		return (NULL);
-	if (is_charset(rest[fd]) == 1)
-	{
-		line = ft_strndup(rest[fd], '\n');
-		if (line == NULL)
-			return (ft_free(&rest[fd]));
-		tmp = rest[fd];
-		rest[fd] = ft_strndup(ft_strchr(rest[fd], '\n'), '\0');
-		ft_free(&tmp);
-		if (rest[fd] == NULL)
-			return (ft_free(&line));
-		return (line);
-	}
 	line = ft_process(&rest[fd], fd);
 	return (line);
 }
@@ -113,20 +102,14 @@ char	*get_next_line(int fd)
 /*
 int	main()
 {
-	int		fd;
 	char	*line;
-	int		i;
+	int		fd;
 
-	i = 0;
 	fd = open("alternate_line_nl_with_nl", O_RDONLY);
-	close(fd);
 	while ((line = get_next_line(fd)))
 	{
 		printf("gnl = %s", line);
-		free(line);
-		i++;
 	}
-	//system("leaks a.out");
 	return (0);
 }
 */
