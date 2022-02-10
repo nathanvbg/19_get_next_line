@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: naverbru <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/08 11:58:46 by naverbru          #+#    #+#             */
-/*   Updated: 2022/02/10 13:19:43 by naverbru         ###   ########.fr       */
+/*   Created: 2022/02/10 13:22:54 by naverbru          #+#    #+#             */
+/*   Updated: 2022/02/10 13:22:59 by naverbru         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_endfree(char **str, char **buf)
 {
